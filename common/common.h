@@ -29,4 +29,4 @@ struct point {
     double dims[DIM];
 };
 
-void printDataset(const point *, const int *, const char *);
+void printDataset(const point*, const int*, const char*);

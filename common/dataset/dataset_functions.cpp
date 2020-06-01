@@ -1,5 +1,4 @@
-
-#include "common.h"
+#include "../common.h"
 
 void mixGauss(point *means, double *sigmas, point *X, int *Y) {
     for (int i=0; i<N_CL; i++) {
@@ -14,7 +13,6 @@ void mixGauss(point *means, double *sigmas, point *X, int *Y) {
         }
     }
 }
-
 
 int main(int argc, char **argv){
     srand(time(nullptr));
