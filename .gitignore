@@ -1,3 +1,4 @@
-fuzzycm
+*fuzzycm*
 generator
 .DS_Store
+*.out
