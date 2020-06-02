@@ -2,10 +2,13 @@
 
 #ifdef MEDIUM
 	#define DATASET_NAME "../common/dataset/medium.csv"
+	#define RESULT "../common/python_plot/medium_out.csv"
 #elif BIG
 	#define DATASET_NAME "../common/dataset/big.csv"
+	#define RESULT "../common/python_plot/big_out.csv"
 #else
 	#define DATASET_NAME "../common/dataset/small.csv"
+	#define RESULT "../common/python_plot/small_out.csv"
 #endif
 
 int main(int argc, char **argv) {
@@ -23,7 +26,7 @@ int main(int argc, char **argv) {
 	fclose(dataset);
 
 	fuzzyCMeans(X, Y);
-	printDataset(X, Y, "test.csv", true);
+	printDataset(X, Y, RESULT, true);
 
 	delete[] X;
 	delete[] Y;
