@@ -2,3 +2,5 @@
 generator
 .DS_Store
 *.out
+*.optrpt
+common/python_plot/*.csv
