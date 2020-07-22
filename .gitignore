@@ -3,5 +3,5 @@ generator
 .DS_Store
 *.out
 *.optrpt
+host_file
 common/python_plot/*.csv
-host_name
