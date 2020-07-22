@@ -4,3 +4,4 @@ generator
 *.out
 *.optrpt
 common/python_plot/*.csv
+host_name
