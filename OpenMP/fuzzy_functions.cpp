@@ -31,7 +31,6 @@ double fuzzy(point x, point *clusters_centers, int clusterIdx) {
 void initializeClustersCenters(point *cc, point *X) {
     for (int i=0; i<N_CL; i++) {
         int r = (rand() % N_POINTS) + i*N_POINTS;
-        //int r = rand() % SIZE;
         for(int k=0;k<DIM;k++)
             cc[i].dims[k] = X[r].dims[k];
     }
@@ -54,7 +53,6 @@ void adjustClustersCenters(point *cc, double *mv, point *X) {
         for(int v=0; v<DIM; v++)
             cc[k].dims[v] = sum_dims[v] / sum_den;
     }
-
 	
    /* for (int i=0; i<N_CL; i++) {
         std::cout << "DEBUG: (";
@@ -75,9 +73,13 @@ double objectiveFunction(double *mv, point *X, point *cc) {
     double J = 0.0;
 
 
-	#pragma omp parallel for private(J) firstprivate(mv, X, cc) schedule(static)
-	//#pragma omp parallel for private(J) firstprivate(mv, X, cc) schedule(dynamic)
-	//#pragma omp parallel for private(J) firstprivate(mv, X, cc) schedule(guided)
+#ifdef STATIC
+		#pragma omp parallel for private(J) firstprivate(mv, X, cc) schedule(static)
+#elif DYNAMIC
+		#pragma omp parallel for private(J) firstprivate(mv, X, cc) schedule(dynamic)
+#else
+		#pragma omp parallel for private(J) firstprivate(mv, X, cc) schedule(guided)
+#endif
     for (int i=0; i<SIZE; i++)
         for (int j=0; j<N_CL; j++)
             J += pow(mv[i*N_CL + j], M) * pow(distance(X[i], cc[j]), 2);
@@ -98,6 +100,14 @@ void fuzzyCMeans(point *X, int *Y) {
     old_J = objectiveFunction(membership_vecs, X, clusters_centers);
     for (n=0; n<N_ITER; n++) {
         adjustClustersCenters(clusters_centers, membership_vecs, X);
+
+#ifdef STATIC
+				#pragma omp parallel for firstprivate(X, clusters_centers) schedule(static)
+#elif DYNAMIC
+				#pragma omp parallel for firstprivate(X, clusters_centers) schedule(dynamic)
+#else
+				#pragma omp parallel for firstprivate(X, clusters_centers) schedule(guided)
+#endif
         for (int i=0; i<SIZE; i++)
             for (int j=0; j<N_CL; j++)
                 membership_vecs[i*N_CL + j] = fuzzy(X[i], clusters_centers, j);
@@ -114,7 +124,6 @@ void fuzzyCMeans(point *X, int *Y) {
     for (int i=0; i<SIZE; i++)
         Y[i] = bestClusterIndex(membership_vecs + i*N_CL);
     
-    //std::cout << n << std::endl;
     delete[] membership_vecs;
     delete[] clusters_centers;
 }
