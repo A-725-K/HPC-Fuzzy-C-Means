@@ -127,3 +127,4 @@ void fuzzyCMeans(point *X, int *Y) {
     delete[] membership_vecs;
     delete[] clusters_centers;
 }
+
