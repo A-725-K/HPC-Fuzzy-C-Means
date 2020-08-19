@@ -1,14 +1,14 @@
 #include "fuzzy_functions.h"
 
 #ifdef MEDIUM
-	#define DATASET_NAME "../common/dataset/medium.csv"
-	#define RESULT "../common/python_plot/medium_out_MPI.csv"
+	#define DATASET_NAME "common/dataset/medium.csv"
+	#define RESULT "results/mpi/medium_out_MPI.csv"
 #elif BIG
-	#define DATASET_NAME "../common/dataset/big.csv"
-	#define RESULT "../common/python_plot/big_out_MPI.csv"
+	#define DATASET_NAME "common/dataset/big.csv"
+	#define RESULT "results/mpi/big_out_MPI.csv"
 #else
-	#define DATASET_NAME "../common/dataset/small.csv"
-	#define RESULT "../common/python_plot/small_out_MPI.csv"
+	#define DATASET_NAME "common/dataset/small.csv"
+	#define RESULT "results/mpi/small_out_MPI.csv"
 #endif
 
 int main(int argc, char **argv) {
@@ -31,11 +31,16 @@ int main(int argc, char **argv) {
 	MPI_Comm_size(MPI_COMM_WORLD, &P);
 	MPI_Comm_rank(MPI_COMM_WORLD, &myid);
 
+	auto start = MPI_Wtime();
 	fuzzyCMeans(X, Y, P, myid);
+	auto end = MPI_Wtime();
+
+	if (!myid)
+		std::cout << end - start << std::endl;
 
 	MPI_Finalize();
 
-	std::cout << "HERE I AM.... ROCK YOU LIKE A HURRICANE!!!!" << std::endl;
+	//std::cout << "HERE I AM.... ROCK YOU LIKE A HURRICANE!!!!" << std::endl;
 	printDataset(X, Y, RESULT, true);
 
 	delete[] X;

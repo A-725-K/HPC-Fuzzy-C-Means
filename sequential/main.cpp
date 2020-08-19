@@ -1,14 +1,14 @@
 #include "fuzzy_functions.h"
 
 #ifdef MEDIUM
-	#define DATASET_NAME "../common/dataset/medium.csv"
-	#define RESULT "../common/python_plot/medium_out.csv"
+	#define DATASET_NAME "common/dataset/medium.csv"
+	#define RESULT "results/sequential/medium_out.csv"
 #elif BIG
-	#define DATASET_NAME "../common/dataset/big.csv"
-	#define RESULT "../common/python_plot/big_out.csv"
+	#define DATASET_NAME "common/dataset/big.csv"
+	#define RESULT "results/sequential/big.csv"
 #else
-	#define DATASET_NAME "../common/dataset/small.csv"
-	#define RESULT "../common/python_plot/small_out.csv"
+	#define DATASET_NAME "common/dataset/small.csv"
+	#define RESULT "results/sequential/small_out.csv"
 #endif
 
 int main(int argc, char **argv) {
@@ -25,8 +25,13 @@ int main(int argc, char **argv) {
 	}
 	fclose(dataset);
 
+	const auto start = std::chrono::high_resolution_clock::now();
 	fuzzyCMeans(X, Y);
+	const auto end = std::chrono::high_resolution_clock::now();
+
+	// print out the results
 	printDataset(X, Y, RESULT, true);
+	std::cout << std::chrono::duration_cast<std::chrono::duration<float>>(end - start).count() << std::endl;
 
 	delete[] X;
 	delete[] Y;

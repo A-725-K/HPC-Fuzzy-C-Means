@@ -3,6 +3,7 @@
 #include <ctime>
 #include <cmath>
 #include <cstring>
+#include <chrono>
 
 #define M 2             // fuzzification parameter
 #define DIM 2         // dimension of the point
