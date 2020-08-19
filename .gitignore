@@ -6,3 +6,5 @@ generator
 host_file
 common/python_plot/*.csv
 cudaproj
+results
+bin
