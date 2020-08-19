@@ -4,6 +4,7 @@ mkdir results/report
 mkdir results/sequential
 mkdir results/parallel
 mkdir results/mpi
+mkdir results/cuda
 
 # to store binary compiled programs
 mkdir bin
