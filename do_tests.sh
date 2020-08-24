@@ -125,7 +125,7 @@ MPI_OUT="$RES_DIR/$MPI/${TIME}_${MPI}_"
 for opt in $OPT; do
 	echo -n "Testing: $MPI_BIN$opt"
 	for i in `seq 1 $N_REP`; do
-		mpirun -n 20 --hostfile "OpenMPI/host_file" "$MPI_BIN$opt" >> "$MPI_OUT$opt"
+		mpirun -n 12 -nolocal --hostfile "OpenMPI/host_file" "$MPI_BIN$opt" >> "$MPI_OUT$opt"
 		echo -n '.'
 	done
 	echo ''
