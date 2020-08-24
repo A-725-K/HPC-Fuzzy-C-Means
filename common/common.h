@@ -31,4 +31,8 @@ struct point {
     double dims[DIM];
 };
 
-void printDataset(const point*, const int*, const char*, bool);
+void printDataset(const point*, const int*, const char*, bool
+#ifdef SCALING
+	, int
+#endif
+);

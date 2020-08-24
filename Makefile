@@ -18,6 +18,7 @@ DY = dynamic
 
 BIN_DIR = bin
 COM_DIR = common
+DTS_DIR = $(COM_DIR)/dataset
 RES_DIR = results
 MPI_DIR = OpenMPI
 MP_DIR  = OpenMP
@@ -26,14 +27,22 @@ RPT_DIR = $(RES_DIR)/report
 
 SEQ_CMD = $(CC) $(COM_FLAGS) $(SEQ)/*.cpp $(COM_DIR)/common.cpp
 PAR_CMD = $(CC) $(COM_FLAGS) $(MP_DIR)/*.cpp $(COM_DIR)/common.cpp $(PAR_FLAGS)
-MPI_CMD = $(MPICC) $(COM_FLAGS) $(MPI_DIR)/*.cpp $(COM_DIR)/common.cpp
+MPI_CMD = $(MPICC) $(COM_FLAGS) $(MPI_DIR)/main.cpp $(MPI_DIR)/fuzzy_functions.cpp $(COM_DIR)/common.cpp
 
-.PHONY: clean all sequential parallel mpi
+
+.PHONY: clean all sequential parallel mpi dataset report
 
 
 all: clean report sequential parallel mpi
 
 
+# DATASET
+dataset: | $(DTS_DIR) $(DTS_DIR)/scaling
+	$(CC) -ansi -std=c++17 -DSMALL -DSCALING $(DTS_DIR)/dataset_functions.cpp $(COM_DIR)/common.cpp -o $(DTS_DIR)/generator
+	./$(DTS_DIR)/scaling/gen_data.sh
+
+
+# GENERATE REPORT WITH INTEL COMPILER
 report: | $(RPT_DIR) $(COM_DIR)
 	@rm -f $(RPT_DIR)/*.optrpt
 	$(CC) $(COM_FLAGS) $(DEV_FLAGS) $(RPT_FLAGS) -O0 $(SEQ)/*.cpp $(COM_DIR)/common.cpp -o $(BIN_DIR)/tmp
@@ -78,20 +87,27 @@ parallelX: | $(BIN_DIR)/$(PAR)
 # MPI COMMANDS
 mpi: mpi0 mpi2 mpiF mpiX
 
-mpi0:
+mpi0: | $(BIN_DIR)/$(MPI)
 	$(MPI_CMD) -O0 -o $(BIN_DIR)/$(MPI)/$(FZY)_$(MPI)_O0
-mpi2:
+mpi2: | $(BIN_DIR)/$(MPI)
 	$(MPI_CMD) -O2 -o $(BIN_DIR)/$(MPI)/$(FZY)_$(MPI)_O2
-mpiF:
+mpiF: | $(BIN_DIR)/$(MPI)
 	$(MPI_CMD) -Ofast -o $(BIN_DIR)/$(MPI)/$(FZY)_$(MPI)_Ofast
-mpiX:
+mpiX: | $(BIN_DIR)/$(MPI)
 	$(MPI_CMD) -xHost -o $(BIN_DIR)/$(MPI)/$(FZY)_$(MPI)_xHost
+
+
+# MPI SCALING
+scaling: | $(BIN_DIR)/$(MPI)
+	$
+	$(MPICC) $(COM_FLAGS) $(MPI_DIR)/main_scaling.cpp $(MPI_DIR)/fuzzy_functions.cpp $(COM_DIR)/common.cpp -O2 -o $(BIN_DIR)/$(MPI)/fuzzycm_mpi_scaling
 
 
 # MP-MPI COMMANDS
 
+
 # UTILITIES
-clean: clean_rpt clean_bin
+clean: clean_rpt clean_bin clean_ds
 
 clean_rpt:
 	rm -f $(RPT_DIR)/*
@@ -101,3 +117,5 @@ clean_bin:
 	rm -f $(BIN_DIR)/$(PAR)/$(DY)/*
 	rm -f $(BIN_DIR)/$(PAR)/$(GU)/*
 	rm -f $(BIN_DIR)/$(MPI)/*
+clean_ds:
+	rm -f $(DTS_DIR)/scaling/*.csv

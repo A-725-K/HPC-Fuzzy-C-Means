@@ -1,15 +1,15 @@
 #include "../common.h"
 
-void mixGauss(point *means, double *sigmas, point *X, int *Y) {
+void mixGauss(point *means, double *sigmas, point *X, int *Y, const int NPOINTS) {
     for (int i=0; i<N_CL; i++) {
         double S = sigmas[i];
         point m = means[i];
-        for (int j=0; j<N_POINTS; j++) {
+        for (int j=0; j<NPOINTS; j++) {
             for(int k=0; k<DIM; k++){
                 double r1 = ((double) rand() / (RAND_MAX));
-                X[i*N_POINTS + j].dims[k] = S*r1 + m.dims[k];
+                X[i*NPOINTS + j].dims[k] = S*r1 + m.dims[k];
             }
-            Y[i*N_POINTS + j] = i;
+            Y[i*NPOINTS + j] = i;
         }
     }
 }
@@ -107,11 +107,30 @@ int main(int argc, char **argv){
     sigmas[3] = 3.72;
 #endif
 
-    point *X = new point[SIZE];
-    int *Y = new int[SIZE];
+		if (argc != 2 && argc != 3) {
+				std::cerr << "Usage: ./generator <POINTS_PER_CL> * " << N_CL 
+									<< " CLUSTERS [<DATASET_NAME>]" << std::endl;
+				return -1;
+		}
+
+		if (argc == 3)
+				ds_name = argv[2];
+		
+		const int NPOINTS = atoi(argv[1]);
+		
+		std::cout << "Points per cluster: " << NPOINTS << std::endl;
+		std::cout << "Size of dataset   : " << NPOINTS*N_CL << std::endl;
+		std::cout << "Dataset name      : " << ds_name << std::endl;
+
+    point *X = new point[NPOINTS*N_CL];
+    int *Y = new int[NPOINTS*N_CL];
     
-    mixGauss(means, sigmas, X, Y);
-    printDataset(X, Y, ds_name, false);
+    mixGauss(means, sigmas, X, Y, NPOINTS);
+    printDataset(X, Y, ds_name, false
+#ifdef SCALING
+		, NPOINTS*N_CL
+#endif
+		);
     
     delete[] means;
     delete[] sigmas;
