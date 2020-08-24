@@ -45,7 +45,7 @@ def main(filename):
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print('Usage: python3 draw_dataset.py <dataset_path>')
+        print('Usage: python3 plot_dataset.py <dataset_path>')
         exit(1)
     
     main(sys.argv[1])
