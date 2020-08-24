@@ -4,7 +4,7 @@ MPICC = mpiicc
 FZY = fuzzycm
 
 RPT_FLAGS = -qopt-report=2 -qopt-report-phase=vec
-DEV_FLAGS = -Wall -pedantic -ggdb -Werror
+DEV_FLAGS = -Wall -pedantic -Werror
 COM_FLAGS = -ansi -std=c++17 -DBIG
 PAR_FLAGS = -lm -qopenmp
 
@@ -45,7 +45,7 @@ dataset: | $(DTS_DIR) $(DTS_DIR)/scaling
 # GENERATE REPORT WITH INTEL COMPILER
 report: | $(RPT_DIR) $(COM_DIR)
 	@rm -f $(RPT_DIR)/*.optrpt
-	$(CC) $(COM_FLAGS) $(DEV_FLAGS) $(RPT_FLAGS) -O0 $(SEQ)/*.cpp $(COM_DIR)/common.cpp -o $(BIN_DIR)/tmp
+	$(CC) $(SEQ)/*.cpp $(COM_DIR)/common.cpp $(COM_FLAGS) $(DEV_FLAGS) $(RPT_FLAGS) -o $(BIN_DIR)/tmp
 	@mv $(BIN_DIR)/*.optrpt $(RPT_DIR) 
 	@rm -f $(BIN_DIR)/tmp
 
