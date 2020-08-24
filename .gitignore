@@ -8,3 +8,5 @@ common/python_plot/*.csv
 cudaproj
 results
 bin
+*WEAK*
+*STRONG*
