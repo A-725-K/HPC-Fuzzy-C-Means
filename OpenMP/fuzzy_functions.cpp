@@ -53,14 +53,6 @@ void adjustClustersCenters(point *cc, double *mv, point *X) {
         for(int v=0; v<DIM; v++)
             cc[k].dims[v] = sum_dims[v] / sum_den;
     }
-	
-   /* for (int i=0; i<N_CL; i++) {
-        std::cout << "DEBUG: (";
-        for (int j=0; j<DIM; j++)
-            std::cout << cc[i].dims[j] << (j==DIM-1 ? "" : ", ");
-        std::cout << ")" << std::endl;
-    }
-    std::cout << std::endl;*/
 }
 
 void initializeMembershipVecs(double *mv, point *cc, point *X) {
@@ -83,7 +75,6 @@ double objectiveFunction(double *mv, point *X, point *cc) {
     for (int i=0; i<SIZE; i++)
         for (int j=0; j<N_CL; j++)
             J += pow(mv[i*N_CL + j], M) * pow(distance(X[i], cc[j]), 2);
-    //std::cout << "DEBUG: J = " << J << std::endl;
     return J;
 }
 
@@ -116,8 +107,6 @@ void fuzzyCMeans(point *X, int *Y) {
         J = objectiveFunction(membership_vecs, X, clusters_centers);
         if (fabs(old_J - J) < EPS)
             break;
-        /*else
-            std::cout << J << std::endl;*/
         old_J = J;
     }
 

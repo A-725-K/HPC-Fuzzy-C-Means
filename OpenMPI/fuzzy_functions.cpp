@@ -92,15 +92,12 @@ void fuzzyCMeans(point *X, int *Y, int P, int myid) {
         J = objectiveFunction(membership_vecs, X, clusters_centers, myid, P);
         if (fabs(old_J - J) < EPS)
             break;
-        /*else
-            std::cout << J << std::endl;*/
         old_J = J;
     }
 
     for (int i=0; i<SIZE; i++)
         Y[i] = bestClusterIndex(membership_vecs + i*N_CL);
     
-    //std::cout << n << std::endl;
     delete[] membership_vecs;
     delete[] clusters_centers;
 }

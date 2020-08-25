@@ -18,11 +18,10 @@ int main(int argc, char **argv) {
 	int *Y = new int[SIZE];
 
 	FILE *dataset = fopen(DATASET_NAME, "r");
-	for (int i=0; i<SIZE; i++) {
-		for (int k=0; k<DIM; k++) {
+	for (int i=0; i<SIZE; i++) 
+		for (int k=0; k<DIM; k++) 
 			fscanf(dataset, "%lg ", &X[i].dims[k]);
-		}
-	}
+	
 	fclose(dataset);
 
 	int P, myid;
@@ -40,7 +39,6 @@ int main(int argc, char **argv) {
 
 	MPI_Finalize();
 
-	//std::cout << "HERE I AM.... ROCK YOU LIKE A HURRICANE!!!!" << std::endl;
 	printDataset(X, Y, RESULT, true);
 
 	delete[] X;

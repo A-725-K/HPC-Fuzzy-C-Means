@@ -103,9 +103,6 @@ scaling: | $(BIN_DIR)/$(MPI)
 	$(MPICC) $(COM_FLAGS) $(MPI_DIR)/main_scaling.cpp $(MPI_DIR)/fuzzy_functions.cpp $(COM_DIR)/common.cpp -O2 -o $(BIN_DIR)/$(MPI)/fuzzycm_mpi_scaling
 
 
-# MP-MPI COMMANDS
-
-
 # UTILITIES
 clean: clean_rpt clean_bin clean_ds
 

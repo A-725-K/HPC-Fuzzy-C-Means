@@ -18,11 +18,10 @@ int main(int argc, char **argv) {
 	int *Y = new int[SIZE];
 
 	FILE *dataset = fopen(DATASET_NAME, "r");
-	for (int i=0; i<SIZE; i++) {
-		for (int k=0; k<DIM; k++) {
+	for (int i=0; i<SIZE; i++) 
+		for (int k=0; k<DIM; k++) 
 			fscanf(dataset, "%lg ", &X[i].dims[k]);
-		}
-	}
+		
 	fclose(dataset);
 
 	auto start = std::chrono::high_resolution_clock::now();

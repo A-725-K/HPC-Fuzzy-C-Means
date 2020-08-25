@@ -127,7 +127,6 @@ void fuzzyCMeans(point *X, int *Y) {
     cudaDeviceSynchronize();
     cudaMemcpy(&old_J, GPU_oldJ, dimD, cudaMemcpyDeviceToHost);
 
-
     for (n=0; n<N_ITER; n++) {
         adjustClustersCenters(clusters_centers, membership_vecs, X);
 
