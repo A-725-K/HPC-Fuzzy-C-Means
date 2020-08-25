@@ -116,3 +116,6 @@ clean_bin:
 	rm -f $(BIN_DIR)/$(MPI)/*
 clean_ds:
 	rm -f $(DTS_DIR)/scaling/*.csv
+
+zip:
+	zip -r $(FZY).zip . -x .git/**\* .git/ $(DTS_DIR)/scaling/*.csv bin/**\* bin/
